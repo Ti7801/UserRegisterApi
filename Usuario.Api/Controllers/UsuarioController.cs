@@ -47,16 +47,13 @@ namespace UsuarioApi.Controllers
                 return NotFound();
             }
 
-            var usuarioNovo = new Usuario()
-            {
-                Id = value.Id,
-                Nome = value.Nome,
-                Cpf = value.Cpf,
-                Email = value.Email,
-                senha = value.senha
-            };
-
-            return usuarioNovo;
+            usuario.Id = value.Id;
+            usuario.Nome = value.Nome;
+            usuario.Cpf = value.Cpf;
+            usuario.Email = value.Email;
+            usuario.senha = value.senha;
+        
+            return usuario;
         }
 
 
