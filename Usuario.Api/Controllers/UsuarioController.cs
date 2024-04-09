@@ -26,6 +26,11 @@ namespace UsuarioApi.Controllers
             usuario.Cpf = value.Cpf;
             usuario.Email = value.Email;
             usuario.senha = value.senha;
+
+            if (usuario.Id == 0)
+            {
+                return BadRequest();
+            }
             
             usuarios.Add(usuario);
 
@@ -33,12 +38,17 @@ namespace UsuarioApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<Usuario>> ListagemUsuarios() 
         {
             return Ok(usuarios);
         }
 
+
         [HttpPut]
+        [ProducesResponseType(typeof(Usuario), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Usuario> AtualizaUsuario([FromBody] Usuario value) 
         {
             var usuario = usuarios.Where(usuario => usuario.Id.Equals(value.Id)).SingleOrDefault(); 
@@ -54,10 +64,12 @@ namespace UsuarioApi.Controllers
             usuario.Email = value.Email;
             usuario.senha = value.senha;
         
-            return usuario;
+            return Ok(usuario);
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Usuario),StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Usuario> BuscaUsuario([FromBody] int id)
         {
             var usuario = usuarios.Where(usuario => usuario.Id.Equals(id)).SingleOrDefault();
@@ -71,7 +83,8 @@ namespace UsuarioApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<List<Usuario>> DeletarUsuario([FromBody]int id) 
+        [ProducesResponseType(typeof(Usuario), StatusCodes.Status200OK)]
+        public ActionResult<List<Usuario>> DeletarUsuario([FromBody] int id) 
         {
             var usuario = usuarios.Where(usuario => usuario.Id.Equals(id)).SingleOrDefault();
 
