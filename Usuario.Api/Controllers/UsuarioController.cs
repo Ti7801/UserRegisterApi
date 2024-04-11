@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UsuarioApi.Models;
+using UsuarioApi.Data;
 
 namespace UsuarioApi.Controllers
 {
@@ -7,13 +8,13 @@ namespace UsuarioApi.Controllers
     [Route("[controller]")] 
     public class UsuarioController : ControllerBase 
     {
-        private readonly List<Usuario> usuarios; // O readonly vai obrigar  a não poder alterar o usuario?
+        private readonly BancoDeDados banco;
 
-        public UsuarioController() 
+        public UsuarioController(BancoDeDados banco) 
         {
-            usuarios = new List<Usuario>();
+           this.banco = banco;  
         }
-
+  
         [HttpPost]  //O FromBody não é obrigatório a partir do C# 3.1 para parametros complexos na Action!
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -32,8 +33,8 @@ namespace UsuarioApi.Controllers
                 return BadRequest();
             }
             
-            usuarios.Add(usuario);
-
+            banco.AdicionarUsuario(usuario);    
+       
             return CreatedAtAction(actionName:nameof(CriarUsuario), usuario);
         }
 
@@ -42,17 +43,16 @@ namespace UsuarioApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<Usuario>> ListagemUsuarios() 
         {
-            return Ok(usuarios);
+            return Ok(banco.ObterUsuarios());
         }
-
 
         [HttpPut]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Usuario> AtualizaUsuario([FromBody] Usuario value) 
         {
-            var usuario = usuarios.Where(usuario => usuario.Id.Equals(value.Id)).SingleOrDefault(); 
-
+            var usuario = banco.ObterUsuarioPorId(value.Id);
+                   
             if(usuario == null)
             {
                 return NotFound();
@@ -70,9 +70,9 @@ namespace UsuarioApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Usuario),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Usuario> BuscaUsuario([FromBody] int id)
+        public ActionResult<Usuario> BuscaUsuario(int id)
         {
-            var usuario = usuarios.Where(usuario => usuario.Id.Equals(id)).SingleOrDefault();
+            var usuario = banco.ObterUsuarioPorId(id);
 
             if (usuario == null)
             {
@@ -81,23 +81,20 @@ namespace UsuarioApi.Controllers
 
             return Ok(usuario);
         }
-
+        
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(Usuario), StatusCodes.Status200OK)]
-        public ActionResult<List<Usuario>> DeletarUsuario([FromBody] int id) 
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Usuario> DeletarUsuario(int id) 
         {
-            var usuario = usuarios.Where(usuario => usuario.Id.Equals(id)).SingleOrDefault();
+            Usuario? usuario = banco.DeletarUsuarioPorId(id);
 
-            usuarios.Remove(usuario);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(usuarios);
+            return  usuario;
         }
-
-
-
-
-
-
-
     }
 }
