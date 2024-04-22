@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UsuarioApi.Models;
 using UsuarioApi.Data;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 
 namespace UsuarioApi.Controllers
 {
@@ -31,6 +33,12 @@ namespace UsuarioApi.Controllers
             if (usuario.Id == 0)
             {
                 return BadRequest();
+            }
+
+            if (!ModelState.IsValid) // Checando Flag Internamente // Herdada de ControllerBase // Retorna True ou False
+            {
+                var erros = ModelState.Values.SelectMany(v => v.Errors).Select(error => error.ErrorMessage);
+                return BadRequest(erros);
             }
             
             banco.AdicionarUsuario(usuario);    
@@ -63,6 +71,12 @@ namespace UsuarioApi.Controllers
             usuario.Cpf = value.Cpf;
             usuario.Email = value.Email;
             usuario.senha = value.senha;
+
+            if (!ModelState.IsValid) // Checando Flag Internamente // Herdada de ControllerBase // Retorna True ou False
+            {
+                var erros = ModelState.Values.SelectMany(v => v.Errors).Select(error => error.ErrorMessage);
+                return BadRequest(erros); // Values é uma lista de várias listas
+            }
         
             return Ok(usuario);
         }
