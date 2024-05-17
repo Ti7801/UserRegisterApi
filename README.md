@@ -14,8 +14,8 @@ não utilização do Entity FrameWork ou alguma ferramenta externa como no caso 
 
  - Lista de usuários para armazenamento dos objetos(usuários) criados.
 
-   #### Comportamentos da Classe
-
+ -  Comportamentos da Classe
+   
      - Adicionar Usuários
      - Obter Usuários
      - Obter Uuários por Id
