@@ -1,6 +1,6 @@
 ## Criação de Api para cadastro de usuários (CRUD)
 
-A ideia principal do projeto é construir uma Api capaz de cadastrar, listar, atualizar e deletar usuários. Todos os dados foram armazenados em listas criadas de tipo Banco de Dados, uma classe construida com esse objetivo. As listas foram criadas para suprir a 
+A ideia principal do projeto foi a construção de uma Api capaz de cadastrar, listar, atualizar e deletar usuários. Todos os dados foram armazenados em listas criadas de tipo Banco de Dados, uma classe construida com esse objetivo. As listas foram criadas para suprir a 
 não utilização do Entity FrameWork ou alguma ferramenta externa como no caso do SQL SERVER.
 
 ### Entidade Usuário Criada
