@@ -63,4 +63,3 @@ A **API de Cadastro de Usuários** implementa os seguintes comportamentos de ope
 
 ---
 
-Esse `README.md` proporciona uma explicação clara e organizada sobre o seu projeto, destacando suas funcionalidades, tecnologias e como utilizá-lo. Sinta-se à vontade para adaptar conforme necessário!
